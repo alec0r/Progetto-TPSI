@@ -12,13 +12,13 @@ import javax.imageio.ImageIO;
 
 import main.ClientMain;
 
-public class PhotoSender implements Runnable {
+public class MittenteFoto implements Runnable {
 
-	private boolean photoSenderAliveStatus = true;
+	private boolean fotoMittenteStatoAttivo = true;
 
 	@Override
 	public void run() {
-		while (photoSenderAliveStatus) {
+		while (fotoMittenteStatoAttivo) {
 			try {
 				ServerSocket serverSocket = new ServerSocket(ClientMain.CLIENT_PHOTO_SENDING_PORT);
 				Socket sock = serverSocket.accept();
@@ -35,8 +35,8 @@ public class PhotoSender implements Runnable {
 		}
 	}
 
-	public void setPhotoSenderAliveStatus(boolean photoSenderAliveStatus) {
-		this.photoSenderAliveStatus = photoSenderAliveStatus;
+	public void setFotoMittenteStatoAttivo(boolean fotoMittenteStatoAttivo) {
+		this.fotoMittenteStatoAttivo = fotoMittenteStatoAttivo;
 	}
 
 }

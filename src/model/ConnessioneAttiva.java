@@ -5,16 +5,16 @@ import java.net.Socket;
 
 import main.ClientMain;
 
-public class AliveConnection implements Runnable {
+public class ConnessioneAttiva implements Runnable {
 
-	private boolean aliveStatus = true;
+	private boolean statoAttivo = true;
 
 	@Override
 	public void run() {
 
 		try {
 			ServerSocket serverSocket = new ServerSocket(ClientMain.CLIENT_ALIVE_PORT);
-			while (aliveStatus) {
+			while (statoAttivo) {
 				Socket sock = serverSocket.accept();
 				sock.close();
 			}
@@ -23,8 +23,8 @@ public class AliveConnection implements Runnable {
 		}
 	}
 
-	public void setAlive(boolean aliveStatus) {
-		this.aliveStatus = aliveStatus;
+	public void setAttivo(boolean statoAttivo) {
+		this.statoAttivo = statoAttivo;
 	}
 
 }

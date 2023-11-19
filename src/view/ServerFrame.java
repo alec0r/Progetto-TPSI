@@ -6,7 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import model.Client;
+import control.Controller;
+import model.ClientDestinatario;
 import model.Server;
 
 import java.awt.Color;
@@ -37,16 +38,25 @@ public class ServerFrame extends JFrame {
 	private Server server;
 	public JLabel countingPhotos = null;
 	private JLabel lblNewLabel;
+	public JButton btnRefresh = new JButton("INDIRIZZO IP");
+	public JButton btnStart = new JButton("ON");;
+	public JButton btnStop = new JButton("OFF");
+	public JButton btnWatch = new JButton("Guarda");
+	public JButton btnChiudi = new JButton("Chiudi");
+	
 
+	
+	
 	public ServerFrame() {
 
 		super();
+		
         server = new Server();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Set the size of the frame to the screen size
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setSize(screenSize.width, screenSize.height);
+        setSize(1920, 868);
 
         contentPane = new JPanel();
         contentPane.setBackground(Color.BLACK);
@@ -69,17 +79,18 @@ public class ServerFrame extends JFrame {
 		tIpField.setFont(new Font("David", Font.BOLD, 16));
 		tIpField.setColumns(10);
 
-		JButton btnRefresh = new JButton("INDIRIZZO IP");
+		//JButton btnRefresh = new JButton("INDIRIZZO IP");
 		btnRefresh.setBounds(10, 49, 177, 35);
 		optionPanel.add(btnRefresh);
-		btnRefresh.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				tIpField.setText(Server.getServerIpAddress());
-			}
-		});
+		//btnRefresh.addActionListener(new ActionListener() {
+			//public void actionPerformed(ActionEvent arg0) {
+				//tIpField.setText(Server.getIndirizzoIpServer());
+			//}
+		//});
+		
 		btnRefresh.setFont(new Font("David", Font.BOLD, 16));
 
-		JButton btnStart = new JButton("ON");
+		//JButton btnStart = new JButton("ON");
 		btnStart.setForeground(Color.GREEN);
 		btnStart.setBounds(10, 133, 84, 36);
 		optionPanel.add(btnStart);
@@ -90,15 +101,10 @@ public class ServerFrame extends JFrame {
 		});
 		btnStart.setFont(new Font("Tahoma", Font.BOLD, 12));
 
-		JButton btnStop = new JButton("OFF");
+		//JButton btnStop = new JButton("OFF");
 		btnStop.setForeground(Color.RED);
 		btnStop.setBounds(104, 133, 83, 36);
 		optionPanel.add(btnStop);
-		btnStop.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				server.stopServer();
-			}
-		});
 		btnStop.setFont(new Font("Tahoma", Font.BOLD, 13));
 
 		JPanel panel_2 = new JPanel();
@@ -121,23 +127,24 @@ public class ServerFrame extends JFrame {
 		});
 		panel_2.add(btnNewButton_2, BorderLayout.SOUTH);
 
-		JButton btnWatch = new JButton("Guarda");
-		btnWatch.addActionListener(new ActionListener() {
+		//JButton btnWatch = new JButton("Guarda");
+		/*btnWatch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				clientDisplay.startDisplay(server.getClientFromClientsList(clientList.getSelectedValue()));
+				clientDisplay.startDisplay(server.getClienteListaClienti(clientList.getSelectedValue()));
 			}
-		});
+		});*/
+		
 		btnWatch.setForeground(Color.GREEN);
 		btnWatch.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnWatch.setBounds(10, 677, 84, 36);
 		optionPanel.add(btnWatch);
 
-		JButton btnChiudi = new JButton("Chiudi");
-		btnChiudi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				clientDisplay.stopDisplay();
-			}
-		});
+		//JButton btnChiudi = new JButton("Chiudi");
+		//btnChiudi.addActionListener(new ActionListener() {
+			//public void actionPerformed(ActionEvent arg0) {
+			//	clientDisplay.stopDisplay();
+			//}
+		//});
 		btnChiudi.setForeground(Color.RED);
 		btnChiudi.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnChiudi.setBounds(103, 677, 84, 36);
@@ -156,10 +163,85 @@ public class ServerFrame extends JFrame {
 		optionPanel.add(lblUtenti);
 
 		clientDisplay = new ClientDisplay();
-		clientDisplay.setBounds(212, 5, 1366, 815);
+		clientDisplay.setBounds(212, 5, 1682, 815);
 		contentPane.add(clientDisplay);
 
 		setLocationRelativeTo(null);
+	
+	}
+		
+		public JList<String> getClientList() {
+		return clientList;
+	}
+
+	public void setClientList(JList<String> clientList) {
+		this.clientList = clientList;
+	}
+	
+		public void registraEvento(Controller controller) {
+		
+		this.btnRefresh.addActionListener(controller);
+		this.btnStart.addActionListener(controller);
+		this.btnStop.addActionListener(controller);
+		this.btnWatch.addActionListener(controller);
+		this.btnChiudi.addActionListener(controller);
+		
+		}
+
+	public ClientDisplay getClientDisplay() {
+			return clientDisplay;
+		}
+
+		public void setClientDisplay(ClientDisplay clientDisplay) {
+			this.clientDisplay = clientDisplay;
+		}
+
+	public JTextField gettIpField() {
+		return tIpField;
+	}
+
+	public void settIpField(JTextField tIpField) {
+		this.tIpField = tIpField;
+	}
+
+	public JButton getBtnRefresh() {
+		return btnRefresh;
+	}
+
+	public void setBtnRefresh(JButton btnRefresh) {
+		this.btnRefresh = btnRefresh;
+	}
+
+	public JButton getBtnStart() {
+		return btnStart;
+	}
+
+	public void setBtnStart(JButton btnStart) {
+		this.btnStart = btnStart;
+	}
+
+	public JButton getBtnStop() {
+		return btnStop;
+	}
+
+	public void setBtnStop(JButton btnStop) {
+		this.btnStop = btnStop;
+	}
+
+	public JButton getBtnWatch() {
+		return btnWatch;
+	}
+
+	public void setBtnWatch(JButton btnWatch) {
+		this.btnWatch = btnWatch;
+	}
+
+	public JButton getBtnChiudi() {
+		return btnChiudi;
+	}
+
+	public void setBtnChiudi(JButton btnChiudi) {
+		this.btnChiudi = btnChiudi;
 	}
 
 	public void addClients(String name) {
@@ -172,13 +254,20 @@ public class ServerFrame extends JFrame {
 		try {
 			clientList.setModel(new DefaultListModel<String>());
 			DefaultListModel<String> dml = new DefaultListModel<>();
-			ArrayList<Client> cc = server.getAliveClientsOnly();
-			for (Client c : cc) {
-				dml.addElement(c.getName());
+			ArrayList<ClientDestinatario> cc = server.getClientAttivi();
+			for (ClientDestinatario c : cc) {
+				dml.addElement(c.getNome());
 			}
 			clientList.setModel(dml);
 		} catch (Exception e) {
 		}
 
 	}
+	
+	public String nomeSelezionato() {
+			String nome = clientList.getSelectedValue();
+		return nome;
+	}
+	
+
 }

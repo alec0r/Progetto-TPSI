@@ -13,7 +13,7 @@ import main.ServerMain;
 public class Server {
 
 	private ServerLife serverLife;
-	private ArrayList<Client> clients;
+	private ArrayList<ClientDestinatario> clients;
 
 	public Server() {
 		serverLife = new ServerLife();
@@ -28,35 +28,36 @@ public class Server {
 		serverLife.setcholbeKina(false);
 	}
 
-	private void addClient(Client client) {
+	private void aggiungiClient(ClientDestinatario client) {
 		clients.add(client);
 	}
 
-	public static String getServerIpAddress() {
+	public static String getIndirizzoIpServer() {
 		try {
 			return InetAddress.getLocalHost().getHostAddress();
 		} catch (UnknownHostException e) {
-			return "NOT FOUND";
+			return "NON TROVATO";
 		}
 	}
 
-	public Client getClientFromClientsList(String name) {
+	public ClientDestinatario getClienteListaClienti(String name) {//prende il cliente dalla lista clienti
+		
 		if (clients == null)
 			return null;
 
-		for (Client cc : clients) {
-			if (cc.getName().equals(name)) {
+		for (ClientDestinatario cc : clients) {
+			if (cc.getNome().equals(name)) {
 				return cc;
 			}
 		}
 		return null;
 	}
 
-	public ArrayList<Client> getAliveClientsOnly() {
-		Iterator<Client> iterator = clients.iterator();
+	public ArrayList<ClientDestinatario> getClientAttivi() {//prende solamente i client attivi
+		Iterator<ClientDestinatario> iterator = clients.iterator();
 		while (iterator.hasNext()) {
 			try {
-				Client c = iterator.next();
+				ClientDestinatario c = iterator.next();
 				Socket socket = new Socket(c.getIp(), ServerMain.CLIENT_ALIVE_PORT);
 				socket.close();
 			} catch (Exception e) {
@@ -69,30 +70,30 @@ public class Server {
 	class ServerLife implements Runnable {
 
 		private ServerSocket serverSocket;
-		private boolean cholbeKina;
+		private boolean flag;
 
 		@Override
 		public void run() {
 			try {
-				cholbeKina = true;
+				flag = true;
 				serverSocket = new ServerSocket(ServerMain.SERVER_PORT);
-				while (cholbeKina) {
+				while (flag) {
 					Socket socket = serverSocket.accept();
 					ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-					String name = (String) in.readObject();
+					String nome = (String) in.readObject();
 
-					boolean alreadyHave = false;
-					for (Client client : clients) {
+					boolean presente = false; //se c'è già (alreaadyHave)
+					for (ClientDestinatario client : clients) {
 						String s = socket.getInetAddress().toString();
 						s = s.substring(1, s.length());
 						if (client.getIp().equals(s)) {
-							alreadyHave = true;
+							presente = true;
 						}
 					}
 
-					if (alreadyHave == false) {
-						addClient(new Client(socket, name));
-						ServerMain.serverFrame.addClients(name);
+					if (presente == false) {
+						aggiungiClient(new ClientDestinatario(socket, nome));
+						ServerMain.serverFrame.addClients(nome);
 					} else {
 						System.out.println("second connection");
 					}
@@ -104,7 +105,7 @@ public class Server {
 		}
 
 		public void setcholbeKina(boolean tof) {
-			cholbeKina = tof;
+			flag = tof;
 		}
 
 	}

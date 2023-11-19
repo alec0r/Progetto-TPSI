@@ -1,5 +1,7 @@
 package main;
 
+import control.Controller;
+import model.Server;
 import view.ServerFrame;
 
 public class ServerMain {
@@ -13,6 +15,9 @@ public class ServerMain {
 	public static void main(String[] args) {
 		serverFrame = new ServerFrame();
 		serverFrame.setVisible(true);
+		Server server = new Server();
+		Controller controller = new Controller(serverFrame,server);
+		
 	}
 
 }

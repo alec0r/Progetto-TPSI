@@ -8,26 +8,26 @@ import javax.imageio.ImageIO;
 
 import main.ServerMain;
 
-public class Client {
+public class ClientDestinatario {
 
-	private String name;
+	private String nome;
 	private String ip;
 
-	public Client(Socket socket, String name) {
-		this.name = name;
+	public ClientDestinatario(Socket socket, String nome) {
+		this.nome = nome;
 		String s = socket.getInetAddress().toString();
 		this.ip = s.substring(1, s.length());
 	}
 
-	public String getName() {
-		return name;
+	public String getNome() {
+		return nome;
 	}
 
 	public String getIp() {
 		return ip;
 	}
 
-	public BufferedImage getRemotePhoto() {
+	public BufferedImage getRemoteFoto() {
 		try {
 			Socket socket = new Socket(ip, ServerMain.CLIENT_PHOTO_SENDING_PORT);
 			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
